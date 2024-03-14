@@ -21,11 +21,14 @@ function newobject:initialize()
 	self.height = 25
 	self.internal = false
 	self.down = false
+	self.wasDown = false
 	self.clickable = true
 	self.enabled = true
 	self.toggleable = false
 	self.toggle = false
+	self.OnUp = nil
 	self.OnClick = nil
+	self.OnDown = nil
 	self.groupIndex = 0
 	self.checked = false
 	
@@ -105,6 +108,7 @@ function newobject:mousepressed(x, y, button)
 	end
 	
 	local hover = self.hover
+	local ondown = self.OnDown
 	
 	if hover then
 		local baseparent = self:GetBaseParent()
@@ -113,7 +117,11 @@ function newobject:mousepressed(x, y, button)
 		end
 		if button == 1 then
 			self.down = true
+			self.wasDown = true
 			loveframes.downobject = self
+			if ondown then
+				ondown(self, x, y, button)
+			end
 		end
 	end
 	
@@ -144,6 +152,7 @@ function newobject:mousereleased(x, y, button)
 	local clickable = self.clickable
 	local enabled = self.enabled
 	local onclick = self.OnClick
+	local onup = self.OnUp
 	
 	if hover and down and clickable and self.pressed_button == button then
 		if enabled then
@@ -173,7 +182,14 @@ function newobject:mousereleased(x, y, button)
 		end
 	end
 
+	if self.wasDown and clickable and self.pressed_button == button then
+		if onup then
+			onup(self, x, y, self.pressed_button)
+		end
+	end
+
 	self.down = false
+	self.wasDown = false
 
 end
 

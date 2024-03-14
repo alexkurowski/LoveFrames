@@ -153,6 +153,39 @@ function newobject:mousereleased(x, y, button)
 end
 
 --[[---------------------------------------------------------
+       - func: mousemoved(x, y, dx, dy)
+       - desc: called when the player moves a mouse cursor
+--]]---------------------------------------------------------
+function newobject:mousemoved(x, y, dx, dy)
+       if loveframes.state ~= self.state then
+               return
+       end
+
+       if not self.visible then
+               return
+       end
+
+       local children = self.children
+       if children then
+               for k, v in ipairs(children) do
+                       v:mousemoved(x, y, dx, dy)
+               end
+       end
+
+       local internals = self.internals
+       if internals then
+               for k, v in ipairs(internals) do
+                       v:mousemoved(x, y, dx, dy)
+               end
+       end
+
+       local on_mouse_move = self.OnMouseMove
+       if on_mouse_move and self.hover then
+               on_mouse_move(self, x, y, dx, dy)
+       end
+end
+
+--[[---------------------------------------------------------
 	- func: wheelmoved(x, y)
 	- desc: called when the player moves a mouse wheel
 --]]---------------------------------------------------------

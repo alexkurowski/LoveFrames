@@ -864,6 +864,13 @@ function newobject:CheckHover()
 		end
 	end
 	
+	-- check if cursor is above the object regardless of other objects
+	if selfcol and type ~= "base" then
+		self.above = true
+	else
+		self.above = false
+	end
+	
 	-- check if the object is being hovered
 	if selfcol and hoverobject == self and type ~= "base" then
 		self.hover = true

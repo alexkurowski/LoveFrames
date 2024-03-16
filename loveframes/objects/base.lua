@@ -652,7 +652,7 @@ function newobject:SetParent(parent)
 	local ptype = tparent.type
 	local stype = self.type
 	
-	if ptype ~= "frame" and ptype ~= "panel" and ptype ~= "list" then
+	if ptype ~= "frame" and ptype ~= "panel" and ptype ~= "list" and ptype ~= "base" then
 		return
 	end
 	
@@ -661,6 +661,17 @@ function newobject:SetParent(parent)
 	self:SetState(tparent.state)
 	
 	table.insert(tparent.children, self)
+	return self
+
+end
+
+--[[---------------------------------------------------------
+	- func: UnsetParent()
+	- desc: sets base as object's parent
+--]]---------------------------------------------------------
+function newobject:UnsetParent()
+
+	self:SetParent(loveframes.base)
 	return self
 
 end
